@@ -1,4 +1,3 @@
-// CircularImages.js
 import * as THREE from "three";
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
@@ -9,7 +8,8 @@ export const CircularImages = ({
   radius = 10,
   count = 20,
   startIndex = 1,
-  reverse = false
+  reverse = false,
+  onImageClick
 }) => {
   const groupRef = useRef();
   const imagesRef = useRef([]);
@@ -57,12 +57,10 @@ export const CircularImages = ({
             rotation={[0, angle + Math.PI, 0]}
             transparent
             side={THREE.DoubleSide}
-            // Optional: Add loading state handlers
-            onLoad={() => console.log(`Image ${i} loaded`)}
-            onError={(e) => console.error(`Error loading image ${i}:`, e)}
-          >
-            <planeGeometry args={[1, 1]} />
-          </Image>
+            onClick={() => onImageClick(`./round1/${startIndex + i}.png`)}
+            onPointerOver={() => (document.body.style.cursor = "pointer")}
+            onPointerOut={() => (document.body.style.cursor = "auto")}
+          />
         );
       })}
     </group>

@@ -4,13 +4,12 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
 
-export const Experience = () => {
+export const Experience = ({ onImageClick }) => {
   const blockingPlaneRef = useRef();
   const { camera, size } = useThree();
 
   useFrame(() => {
     if (blockingPlaneRef.current) {
-      // Calculate plane size to match screen dimensions
       const distance = camera.position.distanceTo(
         blockingPlaneRef.current.position
       );
@@ -34,24 +33,40 @@ export const Experience = () => {
       />
 
       {/* Black Blocking Plane */}
-      <mesh ref={blockingPlaneRef} position={[0, 0, 0]}>
+      <mesh ref={blockingPlaneRef} position={[0, 0, 0]} raycast={() => {}}>
         <planeGeometry args={[1, 1]} />
         <meshBasicMaterial color="black" />
       </mesh>
 
       {/* Top Circle */}
       <group position={[0, 1.6, 0]}>
-        <CircularImages radius={5} count={19} startIndex={1} />
+        <CircularImages
+          radius={5}
+          count={19}
+          startIndex={1}
+          onImageClick={onImageClick}
+        />
       </group>
 
       {/* Middle Circle */}
       <group position={[0, 0, 0]}>
-        <CircularImages radius={5} count={19} startIndex={20} reverse={true} />
+        <CircularImages
+          radius={5}
+          count={19}
+          startIndex={20}
+          reverse={true}
+          onImageClick={onImageClick}
+        />
       </group>
 
       {/* Bottom Circle */}
       <group position={[0, -1.6, 0]}>
-        <CircularImages radius={5} count={19} startIndex={38} />
+        <CircularImages
+          radius={5}
+          count={19}
+          startIndex={38}
+          onImageClick={onImageClick}
+        />
       </group>
     </>
   );

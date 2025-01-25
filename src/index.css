@@ -137,3 +137,123 @@ body {
     right: 2rem;
   }
 }
+
+.image-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.image-container {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.image-container img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.close-button {
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.close-button:hover {
+  opacity: 0.8;
+}
+/* Image Overlay Artist Info */
+.artist-info {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 250px;
+  animation: fadeIn 0.3s ease;
+}
+
+.artist-info h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: white;
+  letter-spacing: -0.02em;
+}
+
+.instagram-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.instagram-link:hover {
+  color: #87ceeb;
+  gap: 0.7rem;
+}
+
+.instagram-icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .artist-info {
+    padding: 0.8rem 1.5rem;
+    min-width: 200px;
+  }
+
+  .artist-info h3 {
+    font-size: 1rem;
+  }
+
+  .instagram-link {
+    font-size: 0.8rem;
+  }
+
+  .instagram-icon {
+    width: 16px;
+    height: 16px;
+  }
+}

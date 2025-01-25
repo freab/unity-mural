@@ -1,0 +1,256 @@
+{
+  "artists": {
+    "first": [
+      {
+        "image": "art1",
+        "artist": "Mubarek Seid",
+        "handle": "muba_901"
+      },
+      {
+        "image": "art2",
+        "artist": "Kirubel Seyoum",
+        "handle": "seyoum.kirubel"
+      },
+      {
+        "image": "art3",
+        "artist": "Matthew Muluneh",
+        "handle": "mad_art_14"
+      },
+      {
+        "image": "art4",
+        "artist": "Selamawit Debebe",
+        "handle": "sd_selam_art"
+      },
+      {
+        "image": "art5",
+        "artist": "Michael Gebru",
+        "handle": "michael_gebru7"
+      },
+      {
+        "image": "art6",
+        "artist": "Yohanan Mengistu",
+        "handle": "yoh.an.an"
+      },
+      {
+        "image": "art7",
+        "artist": "Estifanos Tewodros",
+        "handle": "steve.arts_"
+      },
+      {
+        "image": "art8",
+        "artist": "Yeabtsega Getachew",
+        "handle": "yabi_7"
+      },
+      {
+        "image": "art9",
+        "artist": "Nuhamin Dawit",
+        "handle": "nohuyop"
+      },
+      {
+        "image": "art10",
+        "artist": "Samuel Chalachew",
+        "handle": "sammy_drawss"
+      },
+      {
+        "image": "art11",
+        "artist": "Tsemru Firemariam",
+        "handle": "tsemru.f"
+      },
+      {
+        "image": "art12",
+        "artist": "Hope Alemayehu",
+        "handle": "epohul"
+      },
+      {
+        "image": "art13",
+        "artist": "Ruth Dawit",
+        "handle": "ruth.yop"
+      },
+      {
+        "image": "art14",
+        "artist": "Kaleab Birhanu",
+        "handle": "kaleab.b11"
+      },
+      {
+        "image": "art15",
+        "artist": "Eyoel Paulos",
+        "handle": "eyoel_99"
+      },
+      {
+        "image": "art16",
+        "artist": "Yohannes Tesfu",
+        "handle": "johntesfu5"
+      },
+      {
+        "image": "art17",
+        "artist": "Michael Asrat",
+        "handle": "abby.comics"
+      },
+      {
+        "image": "art18",
+        "artist": "Maraki Girma",
+        "handle": "maraki_girma"
+      },
+      {
+        "image": "art19",
+        "artist": "Robel Tilahun",
+        "handle": "tilla_studios"
+      },
+      {
+        "image": "art20",
+        "artist": "Daniel Temesgen",
+        "handle": "daniel_temesgen_"
+      },
+      {
+        "image": "art21",
+        "artist": "Robel Tamiru",
+        "handle": "dotphic"
+      },
+      {
+        "image": "art22",
+        "artist": "Yohannes Mitiku",
+        "handle": "johnny_mitiku"
+      },
+      {
+        "image": "art23",
+        "artist": "Tina Habtewold",
+        "handle": "tina1creates"
+      },
+      {
+        "image": "art24",
+        "artist": "Biruk Yohannes",
+        "handle": "biruk.blend"
+      },
+      {
+        "image": "art25",
+        "artist": "Tigist Dula",
+        "handle": "tg_dula"
+      },
+      {
+        "image": "art26",
+        "artist": "Tesfamariam Teshome",
+        "handle": "hopethio"
+      },
+      {
+        "image": "art27",
+        "artist": "Amanuel Dejene",
+        "handle": "amex.ttw"
+      },
+      {
+        "image": "art28",
+        "artist": "Noah Eyob",
+        "handle": "1noahark"
+      },
+      {
+        "image": "art29",
+        "artist": "Medhanit Bitew",
+        "handle": "azul_celeste8187"
+      },
+      {
+        "image": "art30",
+        "artist": "Astray Nahusenay",
+        "handle": "icebirrd"
+      },
+      {
+        "image": "art31",
+        "artist": "Astray Nahusenay",
+        "handle": "icebirrd"
+      },
+      {
+        "image": "art32",
+        "artist": "Astray Nahusenay",
+        "handle": "icebirrd"
+      },
+      {
+        "image": "art33",
+        "artist": "Astray Nahusenay",
+        "handle": "icebirrd"
+      },
+      {
+        "image": "art34",
+        "artist": "Astray Nahusenay",
+        "handle": "icebirrd"
+      },
+      {
+        "image": "art35",
+        "artist": "Astray Nahusenay",
+        "handle": "icebirrd"
+      },
+      {
+        "image": "art36",
+        "artist": "Lehem Moges",
+        "handle": "sensei.gong"
+      },
+      {
+        "image": "art37",
+        "artist": "Mikias Muluneh",
+        "handle": "mike_muluneh"
+      },
+      {
+        "image": "art38",
+        "artist": "Raphaella Fekadu",
+        "handle": "raphaelafkdtes"
+      },
+      {
+        "image": "art39",
+        "artist": "Bereket Girma",
+        "handle": "bereket6244"
+      },
+      {
+        "image": "art40",
+        "artist": "Eyob Solomon",
+        "handle": "21_inthe_street"
+      },
+      {
+        "image": "art41",
+        "artist": "Rufael Anteneh",
+        "handle": "rufael_art"
+      },
+      {
+        "image": "art42",
+        "artist": "Nura Mohammed",
+        "handle": "runa_m1"
+      },
+      {
+        "image": "art43",
+        "artist": "Betemariam Brook",
+        "handle": "arc_hive21"
+      },
+      {
+        "image": "art44",
+        "artist": "Hanan Juhar",
+        "handle": "hanuni1212"
+      },
+      {
+        "image": "art45",
+        "artist": "Luladay Beyene",
+        "handle": "littleundecided"
+      },
+      {
+        "image": "art46",
+        "artist": "Abel Bedilu",
+        "handle": "abelbedilu"
+      },
+      {
+        "image": "art47",
+        "artist": "Abel Bedilu",
+        "handle": "abelbedilu"
+      },
+      {
+        "image": "art48",
+        "artist": "Mahder Gebru",
+        "handle": "mery.21st"
+      },
+      {
+        "image": "art49",
+        "artist": "Daniel Habtamu",
+        "handle": "danielhabtamu_"
+      },
+      {
+        "image": "art50",
+        "artist": "Luladay Beyene",
+        "handle": "littleundecided"
+      }
+    ]
+  }
+}
