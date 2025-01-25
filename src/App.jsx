@@ -18,49 +18,58 @@ export default function App() {
   const [showImageOverlay, setShowImageOverlay] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [totalTextures] = useState(57); // 3 circles * 19 images each
-  const [loadedTextures, setLoadedTextures] = useState(0);
-  const progressRef = useRef(0);
 
   const counterRef = useRef(null);
   const preloaderRef = useRef(null);
   const slideRevealRef = useRef(null);
 
+  // Loading tracking refs
+  const totalTextures = 57;
+  const loadedTextures = useRef(0);
+  const SIMULATED_DURATION = 30; // 10 seconds
+  const simulatedProgress = useRef(0);
+  const actualProgress = useRef(0);
+  const displayedProgress = useRef(0);
+  const isLoadingRef = useRef(true);
+
   const handleTextureLoaded = useCallback(() => {
-    setLoadedTextures((prev) => prev + 1);
+    loadedTextures.current += 1;
+    actualProgress.current = (loadedTextures.current / totalTextures) * 100;
+    updateDisplayProgress();
+    if (actualProgress.current >= 100) handleLoadingComplete();
+  }, []);
+
+  const updateDisplayProgress = useCallback(() => {
+    displayedProgress.current = Math.max(
+      simulatedProgress.current,
+      actualProgress.current
+    );
+    setProgress(Math.floor(displayedProgress.current));
+  }, []);
+
+  const handleLoadingComplete = useCallback(() => {
+    if (!isLoadingRef.current) return;
+    isLoadingRef.current = false;
+
+    gsap.to(preloaderRef.current, {
+      autoAlpha: 0,
+      duration: 0.5,
+      onComplete: () => setIsLoading(false)
+    });
   }, []);
 
   useEffect(() => {
-    gsap.to(progressRef, {
-      current: (loadedTextures / totalTextures) * 100,
-      duration: 0.5,
-      ease: "power1.out",
-      onUpdate: () => {
-        setProgress(Math.floor(progressRef.current));
-      }
+    // Simulated progress animation
+    const tl = gsap.to(simulatedProgress, {
+      current: 100,
+      duration: SIMULATED_DURATION,
+      ease: "none",
+      onUpdate: updateDisplayProgress,
+      onComplete: handleLoadingComplete
     });
-  }, [loadedTextures, totalTextures]);
 
-  useEffect(() => {
-    if (loadedTextures === totalTextures) {
-      const tl = gsap.timeline({
-        defaults: { ease: "power4.inOut", duration: 1.5 }
-      });
-
-      tl.fromTo(
-        slideRevealRef.current,
-        { yPercent: 0 },
-        {
-          yPercent: -100,
-          duration: 1.8,
-          ease: "power4.inOut",
-          onComplete: () => setIsLoading(false)
-        }
-      );
-
-      tl.to(preloaderRef.current, { autoAlpha: 0, duration: 0.5 }, "-=0.5");
-    }
-  }, [loadedTextures, totalTextures]);
+    return () => tl.kill();
+  }, [updateDisplayProgress, handleLoadingComplete]);
 
   const handleImageClick = (url) => {
     const artist = artData.artists.first.find((item) => item.image === url);
@@ -77,7 +86,7 @@ export default function App() {
         <div className="slide-reveal" ref={slideRevealRef} />
         <div className="preloader-content">
           <div className="counter" ref={counterRef}>
-            {progress}
+            {progress}%
           </div>
         </div>
       </div>
@@ -91,8 +100,8 @@ export default function App() {
         <ScrollControls pages={5} damping={0.1}>
           <Experience
             onImageClick={handleImageClick}
-            artistsData={artData}
             onTextureLoaded={handleTextureLoaded}
+            artistsData={artData}
           />
         </ScrollControls>
       </Canvas>
