@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Canvas } from "@react-three/fiber";
 import { ScrollControls } from "@react-three/drei";
 import { gsap } from "gsap";
@@ -18,66 +18,49 @@ export default function App() {
   const [showImageOverlay, setShowImageOverlay] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [totalTextures] = useState(57); // 3 circles * 19 images each
+  const [loadedTextures, setLoadedTextures] = useState(0);
+  const progressRef = useRef(0);
 
   const counterRef = useRef(null);
   const preloaderRef = useRef(null);
   const slideRevealRef = useRef(null);
 
-  useEffect(() => {
-    const tl = gsap.timeline({
-      defaults: { ease: "power4.inOut", duration: 1.5 }
-    });
-
-    // Counter animation with random fluctuations
-    tl.to(
-      {},
-      {
-        duration: 2.2,
-        onUpdate: function () {
-          const p = Math.min(this.progress() * 100, 100);
-          const current = Math.floor(p);
-          const fluctuation = Math.random() * 10;
-          const displayValue = Math.min(current + fluctuation, 100);
-          setProgress(Math.floor(displayValue));
-        }
-      }
-    );
-
-    // Smooth final count to 100
-    tl.to(
-      {},
-      {
-        duration: 0.4,
-        onUpdate: () => setProgress(100)
-      },
-      ">-=0.3"
-    );
-
-    // Slide reveal animation
-    tl.fromTo(
-      slideRevealRef.current,
-      { yPercent: 0 },
-      {
-        yPercent: -100,
-        duration: 1.8,
-        ease: "power4.inOut",
-        onComplete: () => setIsLoading(false)
-      },
-      "-=1.2"
-    );
-
-    // Hide preloader
-    tl.to(
-      preloaderRef.current,
-      {
-        autoAlpha: 0,
-        duration: 0.5
-      },
-      "-=0.5"
-    );
-
-    return () => tl.kill();
+  const handleTextureLoaded = useCallback(() => {
+    setLoadedTextures((prev) => prev + 1);
   }, []);
+
+  useEffect(() => {
+    gsap.to(progressRef, {
+      current: (loadedTextures / totalTextures) * 100,
+      duration: 0.5,
+      ease: "power1.out",
+      onUpdate: () => {
+        setProgress(Math.floor(progressRef.current));
+      }
+    });
+  }, [loadedTextures, totalTextures]);
+
+  useEffect(() => {
+    if (loadedTextures === totalTextures) {
+      const tl = gsap.timeline({
+        defaults: { ease: "power4.inOut", duration: 1.5 }
+      });
+
+      tl.fromTo(
+        slideRevealRef.current,
+        { yPercent: 0 },
+        {
+          yPercent: -100,
+          duration: 1.8,
+          ease: "power4.inOut",
+          onComplete: () => setIsLoading(false)
+        }
+      );
+
+      tl.to(preloaderRef.current, { autoAlpha: 0, duration: 0.5 }, "-=0.5");
+    }
+  }, [loadedTextures, totalTextures]);
 
   const handleImageClick = (url) => {
     const artist = artData.artists.first.find((item) => item.image === url);
@@ -90,7 +73,6 @@ export default function App() {
 
   return (
     <div style={{ position: "relative", height: "100vh" }}>
-      {/* Preloader */}
       <div className="preloader" ref={preloaderRef}>
         <div className="slide-reveal" ref={slideRevealRef} />
         <div className="preloader-content">
@@ -100,7 +82,6 @@ export default function App() {
         </div>
       </div>
 
-      {/* Main Canvas */}
       <Canvas
         style={{ opacity: isLoading ? 0 : 1 }}
         shadows
@@ -108,11 +89,14 @@ export default function App() {
       >
         <color attach="background" args={["#111111"]} />
         <ScrollControls pages={5} damping={0.1}>
-          <Experience onImageClick={handleImageClick} artistsData={artData} />
+          <Experience
+            onImageClick={handleImageClick}
+            artistsData={artData}
+            onTextureLoaded={handleTextureLoaded}
+          />
         </ScrollControls>
       </Canvas>
 
-      {/* Image Overlay */}
       {showImageOverlay && (
         <div className="image-overlay">
           <div className="image-container">
@@ -140,7 +124,6 @@ export default function App() {
         </div>
       )}
 
-      {/* UI Overlay */}
       <div className="ui-overlay">
         <div className="text-content">
           <h2 className="title">The Unity Project Mural</h2>

@@ -3,9 +3,9 @@ import { CircularImages } from "./CircularImages";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
-import artistsData from "./art-data.json"; // Import the JSON data
+import artistsData from "./art-data.json";
 
-export const Experience = ({ onImageClick }) => {
+export const Experience = ({ onImageClick, onTextureLoaded }) => {
   const blockingPlaneRef = useRef();
   const { camera, size } = useThree();
 
@@ -33,13 +33,11 @@ export const Experience = ({ onImageClick }) => {
         shadow-mapSize={[2048, 2048]}
       />
 
-      {/* Black Blocking Plane */}
       <mesh ref={blockingPlaneRef} position={[0, 0, 0]} raycast={() => {}}>
         <planeGeometry args={[1, 1]} />
         <meshBasicMaterial color="black" />
       </mesh>
 
-      {/* Top Circle - First 19 images */}
       <group position={[0, 1.6, 0]}>
         <CircularImages
           radius={5}
@@ -47,10 +45,10 @@ export const Experience = ({ onImageClick }) => {
           startIndex={0}
           artistsData={artistsData}
           onImageClick={onImageClick}
+          onTextureLoaded={onTextureLoaded}
         />
       </group>
 
-      {/* Middle Circle - Next 19 images */}
       <group position={[0, 0, 0]}>
         <CircularImages
           radius={5}
@@ -59,10 +57,10 @@ export const Experience = ({ onImageClick }) => {
           reverse={true}
           artistsData={artistsData}
           onImageClick={onImageClick}
+          onTextureLoaded={onTextureLoaded}
         />
       </group>
 
-      {/* Bottom Circle - Final 19 images */}
       <group position={[0, -1.6, 0]}>
         <CircularImages
           radius={5}
@@ -70,6 +68,7 @@ export const Experience = ({ onImageClick }) => {
           startIndex={38}
           artistsData={artistsData}
           onImageClick={onImageClick}
+          onTextureLoaded={onTextureLoaded}
         />
       </group>
     </>
