@@ -1,6 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import { ScrollControls } from "@react-three/drei";
 import Experience from "./components/Experience";
+import "./index.css";
 
 export default function App() {
   return (
@@ -17,52 +18,13 @@ export default function App() {
       </Canvas>
 
       {/* UI Overlay */}
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          pointerEvents: "none",
-          zIndex: 2,
-          padding: "2rem",
-          fontFamily: "'Inter', sans-serif"
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            bottom: "10%",
-            left: "5%",
-            maxWidth: "400px",
-            color: "white",
-            pointerEvents: "auto",
-            mixBlendMode: "difference"
-          }}
-        >
-          <h2
-            style={{
-              fontSize: "1.2rem",
-              marginBottom: "1rem",
-              fontWeight: 500,
-              letterSpacing: "-0.02em"
-            }}
-          >
-            The Unity Project Mural
-          </h2>
-          <p
-            style={{
-              fontSize: "0.9rem",
-              lineHeight: 1.5,
-              opacity: 0.8,
-              margin: 0,
-              fontWeight: 300
-            }}
-          >
-            A collaborative art initiative where individual expressions
-            interlink with surrounding artworks, narrating the story of human
-            connections.
+      <div className="ui-overlay">
+        <div className="text-content">
+          <h2 className="title">The Unity Project Mural</h2>
+          <p className="description">
+            The Unity Project Mural is a diverse art project where people's art
+            connects, showing our interconnectedness. Its art comes from a
+            global community, showcasing rich styles.
           </p>
         </div>
 
@@ -70,19 +32,7 @@ export default function App() {
           href="https://www.unitymural.art/"
           target="_blank"
           rel="noopener noreferrer"
-          style={{
-            position: "absolute",
-            bottom: "2rem",
-            right: "2rem",
-            color: "rgba(255,255,255,0.8)",
-            fontSize: "0.8rem",
-            textDecoration: "none",
-            pointerEvents: "auto",
-            transition: "all 0.3s ease",
-            padding: "0.5rem 1rem",
-            border: "1px solid rgba(255,255,255,0.3)",
-            borderRadius: "50px"
-          }}
+          className="project-link"
         >
           Visit Original Project →
         </a>
