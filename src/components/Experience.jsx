@@ -64,7 +64,7 @@ export const Experience = ({ onImageClick }) => {
         <CircularImages
           radius={5}
           count={19}
-          startIndex={38}
+          startIndex={39}
           onImageClick={onImageClick}
         />
       </group>
