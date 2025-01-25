@@ -10,8 +10,7 @@ export const CircularImages = ({
   startIndex = 0,
   reverse = false,
   onImageClick,
-  artistsData,
-  onTextureLoaded
+  artistsData
 }) => {
   const groupRef = useRef();
   const imagesRef = useRef([]);
@@ -49,25 +48,25 @@ export const CircularImages = ({
 
   return (
     <group ref={groupRef} position={[0, 0, 0]}>
-      {artistsToShow.map((artist, i) => {
-        const angle = (i / count) * Math.PI * 2;
+      {artistsToShow.map((artist, localIndex) => {
+        const globalIndex = startIndex + localIndex;
+        const angle = (localIndex / count) * Math.PI * 2;
         const x = Math.sin(angle) * radius;
         const z = Math.cos(angle) * radius;
 
         return (
           <Image
-            key={artist.image}
-            ref={(el) => (imagesRef.current[i] = el)}
+            key={`${artist.image}-${globalIndex}`}
+            ref={(el) => (imagesRef.current[localIndex] = el)}
             url={artist.image}
             scale={1}
             position={[x, 0, z]}
             rotation={[0, angle + Math.PI, 0]}
             transparent
             side={THREE.DoubleSide}
-            onClick={() => onImageClick(artist.image)}
+            onClick={() => onImageClick(artist, globalIndex)}
             onPointerOver={() => (document.body.style.cursor = "pointer")}
             onPointerOut={() => (document.body.style.cursor = "auto")}
-            onLoad={onTextureLoaded}
           />
         );
       })}

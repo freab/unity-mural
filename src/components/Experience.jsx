@@ -1,13 +1,12 @@
-import { OrbitControls } from "@react-three/drei";
 import { CircularImages } from "./CircularImages";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
 import artistsData from "./art-data.json";
 
-export const Experience = ({ onImageClick, onTextureLoaded }) => {
+export const Experience = ({ onImageClick }) => {
   const blockingPlaneRef = useRef();
-  const { camera, size } = useThree();
+  const { camera } = useThree();
 
   useFrame(() => {
     if (blockingPlaneRef.current) {
@@ -22,6 +21,18 @@ export const Experience = ({ onImageClick, onTextureLoaded }) => {
       blockingPlaneRef.current.quaternion.copy(camera.quaternion);
     }
   });
+
+  // Validate indices don't exceed data length
+  const totalArtists = artistsData.artists.first.length;
+  const indices = [
+    { start: 0, count: 19, yPos: 1.6 },
+    { start: 19, count: 19, yPos: 0, reverse: true },
+    { start: 38, count: 19, yPos: -1.6 }
+  ].map(({ start, count, ...rest }) => ({
+    start: Math.min(start, totalArtists),
+    count: Math.min(count, totalArtists - start),
+    ...rest
+  }));
 
   return (
     <>
@@ -38,39 +49,18 @@ export const Experience = ({ onImageClick, onTextureLoaded }) => {
         <meshBasicMaterial color="black" />
       </mesh>
 
-      <group position={[0, 1.6, 0]}>
-        <CircularImages
-          radius={5}
-          count={19}
-          startIndex={0}
-          artistsData={artistsData}
-          onImageClick={onImageClick}
-          onTextureLoaded={onTextureLoaded}
-        />
-      </group>
-
-      <group position={[0, 0, 0]}>
-        <CircularImages
-          radius={5}
-          count={19}
-          startIndex={19}
-          reverse={true}
-          artistsData={artistsData}
-          onImageClick={onImageClick}
-          onTextureLoaded={onTextureLoaded}
-        />
-      </group>
-
-      <group position={[0, -1.6, 0]}>
-        <CircularImages
-          radius={5}
-          count={19}
-          startIndex={38}
-          artistsData={artistsData}
-          onImageClick={onImageClick}
-          onTextureLoaded={onTextureLoaded}
-        />
-      </group>
+      {indices.map(({ start, count, yPos, reverse }, i) => (
+        <group key={`group-${i}`} position={[0, yPos, 0]}>
+          <CircularImages
+            radius={5}
+            count={count}
+            startIndex={start}
+            reverse={reverse}
+            artistsData={artistsData}
+            onImageClick={onImageClick}
+          />
+        </group>
+      ))}
     </>
   );
 };

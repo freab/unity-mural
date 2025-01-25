@@ -1,10 +1,10 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { Suspense, useState, useEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
-import { ScrollControls } from "@react-three/drei";
-import { gsap } from "gsap";
+import { Loader, ScrollControls } from "@react-three/drei";
 import Experience from "./components/Experience";
+import { gsap } from "gsap";
 import "./index.css";
-import artData from "./components/art-data.json";
+import artistsData from "./components/art-data.json";
 
 const InstagramIcon = () => (
   <svg className="instagram-icon" viewBox="0 0 24 24">
@@ -12,101 +12,72 @@ const InstagramIcon = () => (
   </svg>
 );
 
-export default function App() {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedArtist, setSelectedArtist] = useState(null);
-  const [showImageOverlay, setShowImageOverlay] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-
+const Preloader = ({ onComplete }) => {
   const counterRef = useRef(null);
-  const preloaderRef = useRef(null);
-  const slideRevealRef = useRef(null);
-
-  // Loading tracking refs
-  const totalTextures = 57;
-  const loadedTextures = useRef(0);
-  const SIMULATED_DURATION = 20; // 10 seconds
-  const simulatedProgress = useRef(0);
-  const actualProgress = useRef(0);
-  const displayedProgress = useRef(0);
-  const isLoadingRef = useRef(true);
-
-  const handleTextureLoaded = useCallback(() => {
-    loadedTextures.current += 1;
-    actualProgress.current = (loadedTextures.current / totalTextures) * 100;
-    updateDisplayProgress();
-    if (actualProgress.current >= 100) handleLoadingComplete();
-  }, []);
-
-  const updateDisplayProgress = useCallback(() => {
-    displayedProgress.current = Math.max(
-      simulatedProgress.current,
-      actualProgress.current
-    );
-    setProgress(Math.floor(displayedProgress.current));
-  }, []);
-
-  const handleLoadingComplete = useCallback(() => {
-    if (!isLoadingRef.current) return;
-    isLoadingRef.current = false;
-
-    gsap.to(preloaderRef.current, {
-      autoAlpha: 0,
-      duration: 0.5,
-      onComplete: () => setIsLoading(false)
-    });
-  }, []);
 
   useEffect(() => {
-    // Simulated progress animation
-    const tl = gsap.to(simulatedProgress, {
-      current: 100,
-      duration: SIMULATED_DURATION,
+    let count = { value: 0 };
+    gsap.to(count, {
+      value: 100,
+      duration: 30,
       ease: "none",
-      onUpdate: updateDisplayProgress,
-      onComplete: handleLoadingComplete
+      onUpdate: () => {
+        if (counterRef.current) {
+          counterRef.current.textContent = Math.round(count.value);
+        }
+      },
+      onComplete: () => {
+        onComplete();
+      }
     });
+  }, [onComplete]);
 
-    return () => tl.kill();
-  }, [updateDisplayProgress, handleLoadingComplete]);
+  return (
+    <div className="preloader-overlay">
+      <div className="preloader-content">
+        <h1 ref={counterRef} className="counter">
+          0
+        </h1>
+      </div>
+    </div>
+  );
+};
 
-  const handleImageClick = (url) => {
-    const artist = artData.artists.first.find((item) => item.image === url);
-    if (artist) {
-      setSelectedImage(url);
+export default function App() {
+  const [selectedArtist, setSelectedArtist] = useState(null);
+  const [showImageOverlay, setShowImageOverlay] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const artData = useRef(artistsData); // Use ref to prevent recreation
+
+  const handleImageClick = (artist, index) => {
+    // Verify index matches the actual data
+    const isValid = artData.current.artists.first[index] === artist;
+    if (isValid) {
       setSelectedArtist(artist);
       setShowImageOverlay(true);
     }
   };
 
+  const handlePreloaderComplete = () => {
+    setIsLoading(false);
+  };
+
   return (
     <div style={{ position: "relative", height: "100vh" }}>
-      <div className="preloader" ref={preloaderRef}>
-        <div className="slide-reveal" ref={slideRevealRef} />
-        <div className="preloader-content">
-          <div className="counter" ref={counterRef}>
-            {progress}%
-          </div>
-        </div>
-      </div>
+      {isLoading && <Preloader onComplete={handlePreloaderComplete} />}
 
       <Canvas
-        style={{ opacity: isLoading ? 0 : 1 }}
+        style={{ position: "relative", zIndex: 1, opacity: isLoading ? 0 : 1 }}
         shadows
         camera={{ position: [0, 0, 20], fov: 30 }}
       >
         <color attach="background" args={["#111111"]} />
         <ScrollControls pages={5} damping={0.1}>
-          <Experience
-            onImageClick={handleImageClick}
-            onTextureLoaded={handleTextureLoaded}
-            artistsData={artData}
-          />
+          <Experience onImageClick={handleImageClick} />
         </ScrollControls>
       </Canvas>
 
-      {showImageOverlay && (
+      {showImageOverlay && selectedArtist && (
         <div className="image-overlay">
           <div className="image-container">
             <button
@@ -115,25 +86,23 @@ export default function App() {
             >
               ×
             </button>
-            <img src={selectedImage} alt="Selected artwork" />
-            {selectedArtist && (
-              <div className="artist-info">
-                <h3>{selectedArtist.artist}</h3>
-                <a
-                  href={`https://instagram.com/${selectedArtist.handle}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="instagram-link"
-                >
-                  <InstagramIcon />@{selectedArtist.handle}
-                </a>
-              </div>
-            )}
+            <img src={selectedArtist.image} alt={selectedArtist.artist} />
+            <div className="artist-info">
+              <h3>{selectedArtist.artist}</h3>
+              <a
+                href={`https://instagram.com/${selectedArtist.handle}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="instagram-link"
+              >
+                <InstagramIcon />@{selectedArtist.handle}
+              </a>
+            </div>
           </div>
         </div>
       )}
 
-      <div className="ui-overlay">
+      <div className="ui-overlay" style={{ opacity: isLoading ? 0 : 1 }}>
         <div className="text-content">
           <h2 className="title">The Unity Project Mural</h2>
           <p className="description">
