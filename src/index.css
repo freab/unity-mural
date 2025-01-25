@@ -140,18 +140,17 @@ body {
 .title {
   font-family: "Times New Roman", Times, serif;
   font-size: 2rem;
-  font-weight: 500;
-  letter-spacing: -0.02em;
   color: #10b981;
+  margin-bottom: 0.2rem;
 }
 
 .description {
   font-size: 0.9rem;
   line-height: 1.5;
   opacity: 0.8;
-  margin: 0;
   font-weight: 300;
   color: white;
+  margin-top: 0;
 }
 
 .project-link {
