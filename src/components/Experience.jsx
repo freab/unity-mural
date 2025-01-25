@@ -29,7 +29,7 @@ export const Experience = ({ onImageClick }) => {
       {groups.map((group, i) => (
         <group key={`group-${i}`} position={[0, group.yPos, 0]}>
           <CircularImages
-            radius={6} // Increased radius for better spacing
+            radius={5}
             count={group.count}
             startIndex={group.start}
             reverse={group.reverse}

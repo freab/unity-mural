@@ -14,21 +14,43 @@ const InstagramIcon = () => (
 
 const Preloader = ({ onComplete }) => {
   const counterRef = useRef(null);
+  const slices = Array.from({ length: 5 }); // Number of slices
 
   useEffect(() => {
+    const tl = gsap.timeline();
+    const counter = counterRef.current;
+
+    // Animate counter first
     let count = { value: 0 };
-    gsap.to(count, {
+    tl.to(count, {
       value: 100,
       duration: 30,
       ease: "none",
       onUpdate: () => {
-        if (counterRef.current) {
-          counterRef.current.textContent = Math.round(count.value);
+        if (counter) {
+          counter.textContent = Math.round(count.value);
         }
-      },
-      onComplete: () => {
-        onComplete();
       }
+    });
+
+    // Hide counter when it reaches 100
+    tl.to(
+      counter,
+      {
+        opacity: 0,
+        duration: 0.1,
+        ease: "power2.out"
+      },
+      "+=0.3"
+    );
+
+    // Then animate slices
+    tl.to(".slice", {
+      scaleY: 1,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: "power4.inOut",
+      onComplete: onComplete
     });
   }, [onComplete]);
 
@@ -39,6 +61,11 @@ const Preloader = ({ onComplete }) => {
           0
         </h1>
       </div>
+      <div className="slices-container">
+        {slices.map((_, index) => (
+          <div key={index} className="slice" />
+        ))}
+      </div>
     </div>
   );
 };
@@ -47,10 +74,9 @@ export default function App() {
   const [selectedArtist, setSelectedArtist] = useState(null);
   const [showImageOverlay, setShowImageOverlay] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const artData = useRef(artistsData); // Use ref to prevent recreation
+  const artData = useRef(artistsData);
 
   const handleImageClick = (artist, index) => {
-    // Verify index matches the actual data
     const isValid = artData.current.artists.first[index] === artist;
     if (isValid) {
       setSelectedArtist(artist);
@@ -71,7 +97,7 @@ export default function App() {
         shadows
         camera={{ position: [0, 0, 20], fov: 30 }}
       >
-        <color attach="background" args={["#111111"]} />
+        <color attach="background" args={["#000"]} />
         <ScrollControls pages={5} damping={0.1}>
           <Experience onImageClick={handleImageClick} />
         </ScrollControls>
