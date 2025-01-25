@@ -49,12 +49,17 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const artData = useRef(artistsData); // Use ref to prevent recreation
 
-  const handleImageClick = (artist, index) => {
-    // Verify index matches the actual data
-    const isValid = artData.current.artists.first[index] === artist;
+  const handleImageClick = (artist) => {
+    // Verify artist exists in the original data
+    const isValid = artData.current.artists.first.some(
+      (a) => a.image === artist.image && a.artist === artist.artist
+    );
+
     if (isValid) {
       setSelectedArtist(artist);
       setShowImageOverlay(true);
+    } else {
+      console.warn("Invalid artist selection:", artist);
     }
   };
 

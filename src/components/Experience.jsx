@@ -7,6 +7,18 @@ import artistsData from "./art-data.json";
 export const Experience = ({ onImageClick }) => {
   const blockingPlaneRef = useRef();
   const { camera } = useThree();
+  const totalArtists = artistsData.artists.first.length;
+
+  // Validate group configurations
+  const groups = [
+    { start: 0, count: 19, yPos: 1.6 },
+    { start: 19, count: 19, yPos: 0, reverse: true },
+    { start: 38, count: 19, yPos: -1.6 }
+  ].map((config) => ({
+    ...config,
+    start: Math.min(config.start, totalArtists),
+    count: Math.min(config.count, totalArtists - config.start)
+  }));
 
   useFrame(() => {
     if (blockingPlaneRef.current) {
@@ -21,18 +33,6 @@ export const Experience = ({ onImageClick }) => {
       blockingPlaneRef.current.quaternion.copy(camera.quaternion);
     }
   });
-
-  // Validate indices don't exceed data length
-  const totalArtists = artistsData.artists.first.length;
-  const indices = [
-    { start: 0, count: 19, yPos: 1.6 },
-    { start: 19, count: 19, yPos: 0, reverse: true },
-    { start: 38, count: 19, yPos: -1.6 }
-  ].map(({ start, count, ...rest }) => ({
-    start: Math.min(start, totalArtists),
-    count: Math.min(count, totalArtists - start),
-    ...rest
-  }));
 
   return (
     <>
@@ -49,13 +49,13 @@ export const Experience = ({ onImageClick }) => {
         <meshBasicMaterial color="black" />
       </mesh>
 
-      {indices.map(({ start, count, yPos, reverse }, i) => (
-        <group key={`group-${i}`} position={[0, yPos, 0]}>
+      {groups.map((group, i) => (
+        <group key={`group-${i}`} position={[0, group.yPos, 0]}>
           <CircularImages
-            radius={5}
-            count={count}
-            startIndex={start}
-            reverse={reverse}
+            radius={6} // Increased radius for better spacing
+            count={group.count}
+            startIndex={group.start}
+            reverse={group.reverse}
             artistsData={artistsData}
             onImageClick={onImageClick}
           />
