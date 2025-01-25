@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Image, useScroll } from "@react-three/drei";
 import { easing } from "maath";
@@ -15,10 +15,9 @@ export const CircularImages = ({
   const groupRef = useRef();
   const imagesRef = useRef([]);
   const scroll = useScroll();
-  const hoverState = useRef(Array(count).fill(false));
+  const position = useRef(new THREE.Vector3());
 
   useFrame((state, delta) => {
-    // Rotation logic remains the same
     easing.damp(
       groupRef.current.rotation,
       "y",
@@ -27,27 +26,33 @@ export const CircularImages = ({
       delta
     );
 
-    // Scale animation with proper index mapping
     imagesRef.current.forEach((image, localIndex) => {
       if (!image) return;
 
-      const globalIndex = startIndex + localIndex;
-      const isHovered = hoverState.current[localIndex];
-
+      // Calculate scale
       const baseAngle = (localIndex / count) * Math.PI * 2;
       const currentAngle =
         (baseAngle + groupRef.current.rotation.y) % (Math.PI * 2);
       const angleToCamera = Math.abs(
         Math.atan2(Math.sin(currentAngle), Math.cos(currentAngle))
       );
+      const scale = 1.2 + Math.cos(angleToCamera * 2) * 0.3;
 
-      // Scale based on both camera angle and hover state
-      const targetScale = isHovered
-        ? 1.5
-        : 1.2 + Math.cos(angleToCamera * 2) * 0.3;
+      easing.damp(image.scale, "x", scale, 0.3, delta);
+      easing.damp(image.scale, "y", scale, 0.3, delta);
 
-      easing.damp(image.scale, "x", targetScale, 0.3, delta);
-      easing.damp(image.scale, "y", targetScale, 0.3, delta);
+      // Calculate visibility
+      const angle = (localIndex / count) * Math.PI * 2;
+      const x = Math.sin(angle) * radius;
+      const z = Math.cos(angle) * radius;
+
+      position.current.set(x, 0, z);
+      position.current.applyMatrix4(groupRef.current.matrixWorld);
+
+      // Update visibility state
+      const isVisible = position.current.z >= 0;
+      image.visible = isVisible;
+      image.userData.visible = isVisible;
     });
   });
 
@@ -66,7 +71,7 @@ export const CircularImages = ({
 
         return (
           <Image
-            key={`image-${globalIndex}`}
+            key={`${artist.image}-${globalIndex}`}
             ref={(el) => (imagesRef.current[localIndex] = el)}
             url={artist.image}
             scale={1}
@@ -74,15 +79,17 @@ export const CircularImages = ({
             rotation={[0, angle + Math.PI, 0]}
             transparent
             side={THREE.DoubleSide}
-            onClick={() => onImageClick(artist)}
-            onPointerOver={(e) => {
-              e.stopPropagation();
-              hoverState.current[localIndex] = true;
-              document.body.style.cursor = "pointer";
+            onClick={(e) => {
+              if (e.object.userData.visible) {
+                onImageClick(artist, globalIndex);
+              }
             }}
-            onPointerOut={(e) => {
-              e.stopPropagation();
-              hoverState.current[localIndex] = false;
+            onPointerOver={(e) => {
+              if (e.object.userData.visible) {
+                document.body.style.cursor = "pointer";
+              }
+            }}
+            onPointerOut={() => {
               document.body.style.cursor = "auto";
             }}
           />
