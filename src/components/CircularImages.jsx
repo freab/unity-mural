@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Image, useScroll } from "@react-three/drei";
 import { easing } from "maath";
@@ -16,7 +16,6 @@ export const CircularImages = ({
   const groupRef = useRef();
   const imagesRef = useRef([]);
   const scroll = useScroll();
-  const loadedCount = useRef(0);
 
   useFrame((state, delta) => {
     easing.damp(
@@ -68,10 +67,7 @@ export const CircularImages = ({
             onClick={() => onImageClick(artist.image)}
             onPointerOver={() => (document.body.style.cursor = "pointer")}
             onPointerOut={() => (document.body.style.cursor = "auto")}
-            onLoad={() => {
-              loadedCount.current++;
-              if (onTextureLoaded) onTextureLoaded(loadedCount.current, count);
-            }}
+            onLoad={onTextureLoaded}
           />
         );
       })}
