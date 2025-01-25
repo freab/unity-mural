@@ -3,6 +3,7 @@ import { CircularImages } from "./CircularImages";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
+import artistsData from "./art-data.json"; // Import the JSON data
 
 export const Experience = ({ onImageClick }) => {
   const blockingPlaneRef = useRef();
@@ -38,33 +39,36 @@ export const Experience = ({ onImageClick }) => {
         <meshBasicMaterial color="black" />
       </mesh>
 
-      {/* Top Circle */}
+      {/* Top Circle - First 19 images */}
       <group position={[0, 1.6, 0]}>
         <CircularImages
           radius={5}
           count={19}
-          startIndex={1}
+          startIndex={0}
+          artistsData={artistsData}
           onImageClick={onImageClick}
         />
       </group>
 
-      {/* Middle Circle */}
+      {/* Middle Circle - Next 19 images */}
       <group position={[0, 0, 0]}>
         <CircularImages
           radius={5}
           count={19}
-          startIndex={20}
+          startIndex={19}
           reverse={true}
+          artistsData={artistsData}
           onImageClick={onImageClick}
         />
       </group>
 
-      {/* Bottom Circle */}
+      {/* Bottom Circle - Final 19 images */}
       <group position={[0, -1.6, 0]}>
         <CircularImages
           radius={5}
           count={19}
-          startIndex={39}
+          startIndex={38}
+          artistsData={artistsData}
           onImageClick={onImageClick}
         />
       </group>

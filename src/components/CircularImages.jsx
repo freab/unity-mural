@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Image, useScroll } from "@react-three/drei";
 import { easing } from "maath";
@@ -7,13 +7,16 @@ import { easing } from "maath";
 export const CircularImages = ({
   radius = 10,
   count = 20,
-  startIndex = 1,
+  startIndex = 0,
   reverse = false,
-  onImageClick
+  onImageClick,
+  artistsData,
+  onTextureLoaded
 }) => {
   const groupRef = useRef();
   const imagesRef = useRef([]);
   const scroll = useScroll();
+  const loadedCount = useRef(0);
 
   useFrame((state, delta) => {
     easing.damp(
@@ -40,26 +43,35 @@ export const CircularImages = ({
     });
   });
 
+  const artistsToShow = artistsData.artists.first.slice(
+    startIndex,
+    startIndex + count
+  );
+
   return (
     <group ref={groupRef} position={[0, 0, 0]}>
-      {Array.from({ length: count }, (_, i) => {
+      {artistsToShow.map((artist, i) => {
         const angle = (i / count) * Math.PI * 2;
         const x = Math.sin(angle) * radius;
         const z = Math.cos(angle) * radius;
 
         return (
           <Image
-            key={startIndex + i}
+            key={artist.image}
             ref={(el) => (imagesRef.current[i] = el)}
-            url={`./round1/${startIndex + i}.png`}
+            url={artist.image}
             scale={1}
             position={[x, 0, z]}
             rotation={[0, angle + Math.PI, 0]}
             transparent
             side={THREE.DoubleSide}
-            onClick={() => onImageClick(`./round1/${startIndex + i}.png`)}
+            onClick={() => onImageClick(artist.image)}
             onPointerOver={() => (document.body.style.cursor = "pointer")}
             onPointerOut={() => (document.body.style.cursor = "auto")}
+            onLoad={() => {
+              loadedCount.current++;
+              if (onTextureLoaded) onTextureLoaded(loadedCount.current, count);
+            }}
           />
         );
       })}

@@ -69,7 +69,73 @@ body {
 
 /* App.css */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;500&display=swap");
+/* Preloader Styles */
 
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.slide-reveal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  transform-origin: bottom;
+  z-index: 1;
+}
+
+.preloader-content {
+  position: relative;
+  z-index: 2;
+}
+
+.counter {
+  font-size: 8vw;
+  font-weight: 500;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  mix-blend-mode: difference;
+}
+
+@keyframes digit-glitch {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-3px);
+  }
+  40% {
+    transform: translateX(2px);
+  }
+  60% {
+    transform: translateX(-1px);
+  }
+  80% {
+    transform: translateX(1px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.counter span {
+  display: inline-block;
+  animation: digit-glitch 0.3s ease both;
+}
+
+/* UI Overlay */
 .ui-overlay {
   position: fixed;
   top: 0;
@@ -97,6 +163,20 @@ body {
   margin-bottom: 1rem;
   font-weight: 500;
   letter-spacing: -0.02em;
+  color: #10b981;
+  position: relative;
+  display: inline-block;
+}
+
+.title::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #10b981;
+  transform: scaleX(0.8);
 }
 
 .description {
@@ -105,39 +185,31 @@ body {
   opacity: 0.8;
   margin: 0;
   font-weight: 300;
+  color: white;
 }
 
 .project-link {
   position: absolute;
   bottom: 5rem;
   right: 5rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: #10b981;
+  border: 1px solid #10b981;
   font-size: 0.8rem;
   text-decoration: none;
   pointer-events: auto;
   transition: all 0.3s ease;
   padding: 0.5rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 50px;
+  background: rgba(16, 185, 129, 0.1);
 }
 
-/* Responsive styles */
-@media (max-width: 768px) {
-  .title {
-    font-size: 1rem;
-  }
-
-  .description {
-    font-size: 0.8rem;
-  }
-
-  .project-link {
-    font-size: 0.7rem;
-    bottom: 2rem;
-    right: 2rem;
-  }
+.project-link:hover {
+  background: #10b981; /* emerald-500 */
+  color: white;
+  border-color: transparent;
 }
 
+/* Image Overlay */
 .image-overlay {
   position: fixed;
   top: 0;
@@ -179,7 +251,8 @@ body {
 .close-button:hover {
   opacity: 0.8;
 }
-/* Image Overlay Artist Info */
+
+/* Artist Info */
 .artist-info {
   position: absolute;
   bottom: 20px;
@@ -227,6 +300,7 @@ body {
   fill: currentColor;
 }
 
+/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -238,7 +312,22 @@ body {
   }
 }
 
+/* Responsive Styles */
 @media (max-width: 768px) {
+  .title {
+    font-size: 1rem;
+  }
+
+  .description {
+    font-size: 0.8rem;
+  }
+
+  .project-link {
+    font-size: 0.7rem;
+    bottom: 2rem;
+    right: 2rem;
+  }
+
   .artist-info {
     padding: 0.8rem 1.5rem;
     min-width: 200px;
@@ -257,3 +346,6 @@ body {
     height: 16px;
   }
 }
+
+/* Font Import */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;500&display=swap");

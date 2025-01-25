@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { ScrollControls } from "@react-three/drei";
+import { gsap } from "gsap";
 import Experience from "./components/Experience";
 import "./index.css";
 import artData from "./components/art-data.json";
@@ -15,30 +16,103 @@ export default function App() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedArtist, setSelectedArtist] = useState(null);
   const [showImageOverlay, setShowImageOverlay] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const counterRef = useRef(null);
+  const preloaderRef = useRef(null);
+  const slideRevealRef = useRef(null);
+
+  useEffect(() => {
+    const tl = gsap.timeline({
+      defaults: { ease: "power4.inOut", duration: 1.5 }
+    });
+
+    // Counter animation with random fluctuations
+    tl.to(
+      {},
+      {
+        duration: 2.2,
+        onUpdate: function () {
+          const p = Math.min(this.progress() * 100, 100);
+          const current = Math.floor(p);
+          const fluctuation = Math.random() * 10;
+          const displayValue = Math.min(current + fluctuation, 100);
+          setProgress(Math.floor(displayValue));
+        }
+      }
+    );
+
+    // Smooth final count to 100
+    tl.to(
+      {},
+      {
+        duration: 0.4,
+        onUpdate: () => setProgress(100)
+      },
+      ">-=0.3"
+    );
+
+    // Slide reveal animation
+    tl.fromTo(
+      slideRevealRef.current,
+      { yPercent: 0 },
+      {
+        yPercent: -100,
+        duration: 1.8,
+        ease: "power4.inOut",
+        onComplete: () => setIsLoading(false)
+      },
+      "-=1.2"
+    );
+
+    // Hide preloader
+    tl.to(
+      preloaderRef.current,
+      {
+        autoAlpha: 0,
+        duration: 0.5
+      },
+      "-=0.5"
+    );
+
+    return () => tl.kill();
+  }, []);
 
   const handleImageClick = (url) => {
-    const imageNumber = url.match(/(\d+)\.png$/)[1];
-    const artist = artData.artists.first.find(
-      (item) => item.image === `art${imageNumber}`
-    );
-    setSelectedImage(url);
-    setSelectedArtist(artist);
-    setShowImageOverlay(true);
+    const artist = artData.artists.first.find((item) => item.image === url);
+    if (artist) {
+      setSelectedImage(url);
+      setSelectedArtist(artist);
+      setShowImageOverlay(true);
+    }
   };
 
   return (
     <div style={{ position: "relative", height: "100vh" }}>
+      {/* Preloader */}
+      <div className="preloader" ref={preloaderRef}>
+        <div className="slide-reveal" ref={slideRevealRef} />
+        <div className="preloader-content">
+          <div className="counter" ref={counterRef}>
+            {progress}
+          </div>
+        </div>
+      </div>
+
+      {/* Main Canvas */}
       <Canvas
-        style={{ position: "relative", zIndex: 1 }}
+        style={{ opacity: isLoading ? 0 : 1 }}
         shadows
         camera={{ position: [0, 0, 20], fov: 30 }}
       >
         <color attach="background" args={["#111111"]} />
         <ScrollControls pages={5} damping={0.1}>
-          <Experience onImageClick={handleImageClick} />
+          <Experience onImageClick={handleImageClick} artistsData={artData} />
         </ScrollControls>
       </Canvas>
 
+      {/* Image Overlay */}
       {showImageOverlay && (
         <div className="image-overlay">
           <div className="image-container">
@@ -66,6 +140,7 @@ export default function App() {
         </div>
       )}
 
+      {/* UI Overlay */}
       <div className="ui-overlay">
         <div className="text-content">
           <h2 className="title">The Unity Project Mural</h2>

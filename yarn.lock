@@ -1716,6 +1716,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"gsap@npm:^3.12.7":
+  version: 3.12.7
+  resolution: "gsap@npm:3.12.7"
+  checksum: 15f5da56d02f04be8eb4b58cb733fbd71619647608c0854717697da8b1922a5ce4ea5487cba0c66f428aa645247e143e462bec885f8470725c2c9ab393247e25
+  languageName: node
+  linkType: hard
+
 "has-flag@npm:^3.0.0":
   version: 3.0.0
   resolution: "has-flag@npm:3.0.0"
@@ -2267,6 +2274,7 @@ __metadata:
     "@vitejs/plugin-react": ^4.3.1
     framer-motion: ^12.0.5
     globals: ^15.9.0
+    gsap: ^3.12.7
     maath: ^0.10.8
     react: ^18.3.1
     react-dom: ^18.3.1
