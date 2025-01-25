@@ -26,7 +26,7 @@ export default function App() {
   // Loading tracking refs
   const totalTextures = 57;
   const loadedTextures = useRef(0);
-  const SIMULATED_DURATION = 30; // 10 seconds
+  const SIMULATED_DURATION = 20; // 10 seconds
   const simulatedProgress = useRef(0);
   const actualProgress = useRef(0);
   const displayedProgress = useRef(0);
