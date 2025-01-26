@@ -104,7 +104,6 @@ export default function App() {
         </ScrollControls>
       </Canvas>
 
-      {/* Rest of your UI components remain the same */}
       {showImageOverlay && selectedArtist && (
         <div className="image-overlay">
           <div className="image-container">

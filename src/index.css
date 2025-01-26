@@ -2,44 +2,36 @@
 #root {
   width: 100vw;
   height: 100vh;
-  overflow-y: auto; /* Enable vertical scrolling */
-  scrollbar-width: thin; /* Hide default scrollbar in Firefox */
-  scrollbar-color: transparent transparent; /* Hide default scrollbar in Firefox */
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
 }
 
 /* Webkit (Chrome, Safari) */
 #root::-webkit-scrollbar {
-  width: 8px; /* Adjust width as needed */
+  width: 8px;
 }
 
 #root::-webkit-scrollbar-track {
-  background: transparent; /* Transparent track */
+  background: transparent;
 }
 
 #root::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    to bottom,
-    #87ceeb,
-    #6495ed
-  ); /* Light blue to medium blue gradient */
-  border-radius: 4px; /* Rounded corners */
-  border: 2px solid transparent; /* Inset effect */
+  background: linear-gradient(to bottom, #87ceeb, #6495ed);
+  border-radius: 4px;
+  border: 2px solid transparent;
   background-clip: padding-box;
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Add transform for animation */
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 #root::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(
-    to bottom,
-    #6495ed,
-    #4682b4
-  ); /* Darker blue gradient on hover */
+  background: linear-gradient(to bottom, #6495ed, #4682b4);
 }
 
-/* Add a subtle "pulse" animation on active scroll */
+/*ubtle "pulse" animation on active scroll */
 #root:active::-webkit-scrollbar-thumb,
 #root:focus::-webkit-scrollbar-thumb {
-  transform: scale(1.1); /* Slightly enlarge the thumb */
+  transform: scale(1.1);
 }
 
 /* Firefox */
@@ -53,7 +45,6 @@ html {
   scrollbar-color: rgba(135, 206, 235, 0.5) transparent;
 }
 
-/* Optional: Style the scrollbar corner */
 #root::-webkit-scrollbar-corner {
   background: transparent;
 }
@@ -86,7 +77,7 @@ body {
 
 .preloader-content {
   position: relative;
-  z-index: 2; /* Ensure counter is above slices */
+  z-index: 2;
 }
 
 .counter {
@@ -169,7 +160,7 @@ body {
 }
 
 .project-link:hover {
-  background: #10b981; /* emerald-500 */
+  background: #10b981;
   color: white;
   border-color: transparent;
 }

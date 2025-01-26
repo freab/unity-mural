@@ -22,7 +22,6 @@ export const CircularImages = ({
     startIndex + count
   );
 
-  // Load all textures
   const textures = useTexture(artistsToShow.map((artist) => artist.image));
 
   useFrame((state, delta) => {
@@ -37,7 +36,6 @@ export const CircularImages = ({
     imagesRef.current.forEach((image, localIndex) => {
       if (!image) return;
 
-      // Calculate scale
       const baseAngle = (localIndex / count) * Math.PI * 2;
       const currentAngle =
         (baseAngle + groupRef.current.rotation.y) % (Math.PI * 2);

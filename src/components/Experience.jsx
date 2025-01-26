@@ -5,7 +5,6 @@ import artistsData from "./art-data.json";
 export const Experience = ({ onImageClick }) => {
   const totalArtists = artistsData.artists.first.length;
 
-  // Validate group configurations
   const groups = [
     { start: 0, count: 19, yPos: 1.6 },
     { start: 19, count: 19, yPos: 0, reverse: true },
