@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Image, useScroll } from "@react-three/drei";
+import { useTexture, useScroll } from "@react-three/drei";
 import { easing } from "maath";
 
 export const CircularImages = ({
@@ -16,6 +16,14 @@ export const CircularImages = ({
   const imagesRef = useRef([]);
   const scroll = useScroll();
   const position = useRef(new THREE.Vector3());
+
+  const artistsToShow = artistsData.artists.first.slice(
+    startIndex,
+    startIndex + count
+  );
+
+  // Load all textures
+  const textures = useTexture(artistsToShow.map((artist) => artist.image));
 
   useFrame((state, delta) => {
     easing.damp(
@@ -56,11 +64,6 @@ export const CircularImages = ({
     });
   });
 
-  const artistsToShow = artistsData.artists.first.slice(
-    startIndex,
-    startIndex + count
-  );
-
   return (
     <group ref={groupRef} position={[0, 0, 0]}>
       {artistsToShow.map((artist, localIndex) => {
@@ -70,29 +73,33 @@ export const CircularImages = ({
         const z = Math.cos(angle) * radius;
 
         return (
-          <Image
+          <mesh
             key={`${artist.image}-${globalIndex}`}
             ref={(el) => (imagesRef.current[localIndex] = el)}
-            url={artist.image}
-            scale={1}
             position={[x, 0, z]}
             rotation={[0, angle + Math.PI, 0]}
-            transparent
-            side={THREE.DoubleSide}
             onClick={(e) => {
-              if (e.object.userData.visible) {
+              if (e.eventObject.userData.visible) {
                 onImageClick(artist, globalIndex);
               }
             }}
             onPointerOver={(e) => {
-              if (e.object.userData.visible) {
+              if (e.eventObject.userData.visible) {
                 document.body.style.cursor = "pointer";
               }
             }}
             onPointerOut={() => {
               document.body.style.cursor = "auto";
             }}
-          />
+          >
+            <planeGeometry args={[1, 1]} />
+            <meshBasicMaterial
+              map={textures[localIndex]}
+              transparent
+              side={THREE.DoubleSide}
+              toneMapped={false}
+            />
+          </mesh>
         );
       })}
     </group>

@@ -1565,6 +1565,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ev-emitter@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "ev-emitter@npm:2.1.2"
+  checksum: 1102823ef040684869256100e19a6c6aeeecd422d09a267d7c74e77023136eede2ee86ee475ad1019d30d1f7917557d74542d5665e9f91c398bd5814260af6b3
+  languageName: node
+  linkType: hard
+
 "exponential-backoff@npm:^3.1.1":
   version: 3.1.1
   resolution: "exponential-backoff@npm:3.1.1"
@@ -1777,6 +1784,15 @@ __metadata:
   version: 1.2.1
   resolution: "ieee754@npm:1.2.1"
   checksum: 5144c0c9815e54ada181d80a0b810221a253562422e7c6c3a60b1901154184f49326ec239d618c416c1c5945a2e197107aee8d986a3dd836b53dffefd99b5e7e
+  languageName: node
+  linkType: hard
+
+"imagesloaded@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "imagesloaded@npm:5.0.0"
+  dependencies:
+    ev-emitter: ^2.1.2
+  checksum: aec1826e866bcf2f92fc533b78e431597096c32dda3cf6de060f9dc2bdf1e39bb600eda244a7280ed09a7d12462fb63cf01e723799d35a86a326592e2f23751b
   languageName: node
   linkType: hard
 
@@ -2275,6 +2291,7 @@ __metadata:
     framer-motion: ^12.0.5
     globals: ^15.9.0
     gsap: ^3.12.7
+    imagesloaded: ^5.0.0
     maath: ^0.10.8
     react: ^18.3.1
     react-dom: ^18.3.1

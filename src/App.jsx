@@ -1,6 +1,11 @@
 import { Suspense, useState, useEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Loader, ScrollControls } from "@react-three/drei";
+import {
+  Loader,
+  ScrollControls,
+  Preload,
+  useProgress
+} from "@react-three/drei";
 import Experience from "./components/Experience";
 import { gsap } from "gsap";
 import "./index.css";
@@ -12,44 +17,37 @@ const InstagramIcon = () => (
   </svg>
 );
 
-const Preloader = ({ onComplete }) => {
+const Preloader = ({ progress, onComplete }) => {
   const counterRef = useRef(null);
   const slices = Array.from({ length: 5 });
 
   useEffect(() => {
     const tl = gsap.timeline();
-    const counter = counterRef.current;
 
-    let count = { value: 0 };
-    tl.to(count, {
-      value: 100,
-      duration: 30,
-      ease: "none",
-      onUpdate: () => {
-        if (counter) {
-          counter.textContent = Math.round(count.value);
-        }
-      }
+    // Update counter text
+    gsap.to(counterRef.current, {
+      textContent: Math.round(progress),
+      duration: 0.1,
+      snap: { textContent: 1 }
     });
 
-    tl.to(
-      counter,
-      {
+    // When loading completes
+    if (progress === 100) {
+      tl.to(counterRef.current, {
         opacity: 0,
-        duration: 0.1,
+        duration: 0.3,
         ease: "power2.out"
-      },
-      "+=0.3"
-    );
+      });
 
-    tl.to(".slice", {
-      scaleY: 1,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: "power4.inOut",
-      onComplete: onComplete
-    });
-  }, [onComplete]);
+      tl.to(".slice", {
+        scaleY: 1,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power4.inOut",
+        onComplete: onComplete
+      });
+    }
+  }, [progress, onComplete]);
 
   return (
     <div className="preloader-overlay">
@@ -71,6 +69,7 @@ export default function App() {
   const [selectedArtist, setSelectedArtist] = useState(null);
   const [showImageOverlay, setShowImageOverlay] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const { progress } = useProgress();
   const artData = useRef(artistsData);
 
   const handleImageClick = (artist, index) => {
@@ -87,7 +86,9 @@ export default function App() {
 
   return (
     <div style={{ position: "relative", height: "100vh" }}>
-      {isLoading && <Preloader onComplete={handlePreloaderComplete} />}
+      {isLoading && (
+        <Preloader progress={progress} onComplete={handlePreloaderComplete} />
+      )}
 
       <Canvas
         style={{ position: "relative", zIndex: 1, opacity: isLoading ? 0 : 1 }}
@@ -96,10 +97,14 @@ export default function App() {
       >
         <color attach="background" args={["#000"]} />
         <ScrollControls pages={5} damping={0.1}>
-          <Experience onImageClick={handleImageClick} />
+          <Suspense fallback={null}>
+            <Experience onImageClick={handleImageClick} />
+            <Preload all />
+          </Suspense>
         </ScrollControls>
       </Canvas>
 
+      {/* Rest of your UI components remain the same */}
       {showImageOverlay && selectedArtist && (
         <div className="image-overlay">
           <div className="image-container">
@@ -142,14 +147,6 @@ export default function App() {
           className="project-link"
         >
           Visit Original Project →
-        </a>
-        <a
-          href="https://t.me/gugutlogs"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="made-by"
-        >
-          Made by Freab
         </a>
       </div>
     </div>
