@@ -14,13 +14,12 @@ const InstagramIcon = () => (
 
 const Preloader = ({ onComplete }) => {
   const counterRef = useRef(null);
-  const slices = Array.from({ length: 5 }); // Number of slices
+  const slices = Array.from({ length: 5 });
 
   useEffect(() => {
     const tl = gsap.timeline();
     const counter = counterRef.current;
 
-    // Animate counter first
     let count = { value: 0 };
     tl.to(count, {
       value: 100,
@@ -33,7 +32,6 @@ const Preloader = ({ onComplete }) => {
       }
     });
 
-    // Hide counter when it reaches 100
     tl.to(
       counter,
       {
@@ -44,7 +42,6 @@ const Preloader = ({ onComplete }) => {
       "+=0.3"
     );
 
-    // Then animate slices
     tl.to(".slice", {
       scaleY: 1,
       duration: 0.8,
@@ -145,6 +142,14 @@ export default function App() {
           className="project-link"
         >
           Visit Original Project →
+        </a>
+        <a
+          href="https://t.me/gugutlogs"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="made-by"
+        >
+          Made by Freab
         </a>
       </div>
     </div>
