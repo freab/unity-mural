@@ -1,10 +1,28 @@
-# r3f-vite-starter
-A boilerplate to build R3F projects
+# 🎨 The Unity Project Mural - Interactive 3D Gallery
 
-```
-yarn
-yarn dev
-```
+<video src="public/desc.mp4" width="100%" autoplay loop muted playsinline></video>
 
+An immersive 3D experience showcasing collaborative artwork in a circular gallery format. Built with React Three Fiber and GSAP for smooth interactions and realistic rendering.
 
-![image](https://user-images.githubusercontent.com/6551176/221732091-23ee52cb-4150-42fa-b998-43628d7a6b0d.png)
+![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white)
+![Three.js](https://img.shields.io/badge/-Three.js-000000?logo=three.js&logoColor=white)
+![Vite](https://img.shields.io/badge/-Vite-646CFF?logo=vite&logoColor=white)
+![MIT License](https://img.shields.io/badge/license-MIT-green)
+
+## ✨ Features
+
+- 🌀 Circular 3D gallery with dynamic image loading
+- 🎥 Scroll-controlled animations
+- ⏳ Custom preloader with progress tracking
+- 🖱️ Interactive artwork elements with hover effects
+- 📱 Responsive design for all screen sizes
+- 💫 GSAP-powered UI transitions
+- 🖼️ Artist information overlay with social links
+
+## 🛠 Technologies Used
+
+- **Frontend**: React + Vite
+- **3D Rendering**: Three.js, @react-three/fiber, @react-three/drei
+- **Animation**: GSAP, Maath
+- **UI**: CSS3, Flexbox, Grid
+- **Bundler**: Vite
