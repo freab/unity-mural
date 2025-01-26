@@ -1,6 +1,6 @@
 # 🎨 The Unity Project Mural - Interactive 3D Gallery
 
-<video src="public/desc.mp4" width="100%" autoplay loop muted playsinline></video>
+[![Demo Video](./public/desc.mp4)](https://unitymural.freab.com)
 
 An immersive 3D experience showcasing collaborative artwork in a circular gallery format. Built with React Three Fiber and GSAP for smooth interactions and realistic rendering.
 
